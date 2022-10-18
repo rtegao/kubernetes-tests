@@ -1,2 +1,2 @@
-# kubernetes_tests
+# kubernetes-tests
 Kubernetes repository for tests
