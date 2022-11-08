@@ -1,0 +1,38 @@
+# Declaring deployment creation
+apiVersion: apps/v1
+kind: Deployment
+# First main part: metadata
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+# Second main part: specification
+spec: #the attributes in the specification are specific to each kind of component
+  replicas: 1
+  # selector is responsable to connect deployment and pod by label (in this case is by the app name "mongodb")
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+  # configuration applyed to the pod
+    metadata:
+      labels:
+        app: mongodb
+    # pod blueprint
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports: 
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongodb-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongodb-root-password
